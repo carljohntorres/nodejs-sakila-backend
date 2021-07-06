@@ -1,9 +1,5 @@
-# nodejs-sakila-backend
+# Sakila Web Serice
 Web Service API using NodeJS and MySQL
-
-# Project Title
-
-A nice project with a nice description
 
 ---
 ## Requirements
@@ -29,43 +25,16 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
 If the installation was successful, you should be able to run the following command.
 
     $ node --version
-    v8.11.3
+    v14.17.1
 
     $ npm --version
-    6.1.0
+    6.14.13
 
 If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
 
     $ npm install npm -g
 
-###
-### Yarn installation
-  After installing node, this project will need yarn too, so just run the following command.
+- #### Start service
 
-      $ npm install -g yarn
-
----
-
-## Install
-
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
-    $ cd PROJECT_TITLE
-    $ yarn install
-
-## Configure app
-
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
-
-- A setting;
-- Another setting;
-- One more setting;
-
-## Running the project
-
-    $ yarn start
-
-## Simple build for production
-
-    $ yarn build
-
+    $ npm start
 
