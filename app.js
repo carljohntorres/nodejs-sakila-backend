@@ -1,30 +1,15 @@
 const express = require('express');
-const bodyParser = require('body-parser')
-const mysql = require('mysql');
+// const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
+const fs = require('fs');
+const conn = require('./private/connection/connection');
+const { allowedNodeEnvironmentFlags } = require('process');
+const { SUPPORTBIGNUMBERS } = require('./configuration/credentials');
+
 const app = express();
 
-const conn = mysql.createConnection({
-
-    host : 'localhost',
-    user : 'root',
-    password : '123456789',
-    ssl : false,
-    port : 3306,
-    database : 'sakila',
-    supportBigNumbers : true,
-    connectTimeout : 30
-
-});
-
-// connection check before API work
-conn.connect((err) => {
-    if (err) {
-        console.error('Can\'t reach Database ' + err.stack)
-    }
-    console.log('Database connected : ' + conn.threadId);
-    app.listen(3000);
-});
+// app.use(cors());
 
 app.use(morgan('dev', {
     skip: (req, res) => {
@@ -33,10 +18,37 @@ app.use(morgan('dev', {
 }));
 
 
-
-
 app.get('/', (req, res) => {
+    res.json({ message : 'Service is running' });
+});
 
-    res.send('<h1>Hello world</h1>');
+// Connect first before enable API
+conn.connect( err => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+    console.log(`DATABASE CONNECTED THREAD ID : ${conn.threadId}.`);
 
-});;
+    const port = process.env.PORT || 3000;
+
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+
+    // Include all routes dynamically
+    let norm_path = path.join(__dirname, "routes");
+    
+    fs.readdirSync(norm_path).forEach( file => {
+        app.use('/', require(`./routes/${file}`));
+    });
+
+    
+    //app.use(app.router);
+    
+
+    app.listen(port, () => console.log(`DEVELOPMENT MODE LISTENING ${port}`));
+   
+
+});
+
+
