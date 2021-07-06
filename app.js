@@ -1,11 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+// const bodyParse = require('body-parser');
 const mysql = require('mysql');
 const morgan = require('morgan');
 const app = express();
+const port = process.env.PORT || 3000;
 
-const conn = mysql.createConnection({
-
+const pool = mysql.createPool({
     host : 'localhost',
     user : 'root',
     password : '123456789',
@@ -13,17 +13,20 @@ const conn = mysql.createConnection({
     port : 3306,
     database : 'sakila',
     supportBigNumbers : true,
-    connectTimeout : 30
-
+    connectionLimit : 3
 });
 
-// connection check before API work
-conn.connect((err) => {
-    if (err) {
-        console.error('Can\'t reach Database ' + err.stack)
-    }
-    console.log('Database connected : ' + conn.threadId);
-    app.listen(3000);
+app.listen(port, () => console.log(`DEVELOPMENT MODE LISTENING ${port}`));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+
+pool.on('acquire', (connection) => {
+   
+    console.log(`Connection ${connection.threadId} acquired`);
+
+    
+    
 });
 
 app.use(morgan('dev', {
@@ -32,11 +35,34 @@ app.use(morgan('dev', {
     }
 }));
 
+checkpool = () => {
+    pool.on('acquire', (connection) => {
+        console.log(`Connection ${connection.threadId} acquired`);
+    });
 
+    console.log('test');
+}
 
+app.get('', (req, res) => {   
 
-app.get('/', (req, res) => {
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
 
-    res.send('<h1>Hello world</h1>');
+        conn.query('SELECT * FROM customer', (err, rows, fields) => {
+
+            conn.release();
+
+            if (!err) {
+                console.log(fields);
+                res.send(rows);
+            } else {
+                console.error(err.stack);
+            }
+
+        });
+       
+    })
+
+    
 
 });;
