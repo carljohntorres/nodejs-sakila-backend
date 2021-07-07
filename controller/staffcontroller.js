@@ -2,15 +2,16 @@ const staffservice = require('../service/staffservice');
 
 // Retrieve all Staff
 exports.getAll = (req, res) => {
+
     staffservice.getAll((err, data) => {
         if (err) {
             res.status(500).send({
-                message : err.message || "Some error occurred while retrieving staff."
+                message: err.message || "Some error occurred while retrieving staff."
             });
-        } 
+        }
 
         res.send(data);
-        
+
     });
 }
 
@@ -18,7 +19,7 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
 
     staffservice.getById(
-        req.params.staff_id,
+        req.params,
         (err, data) => {
 
             if (err) {
@@ -28,7 +29,7 @@ exports.getById = (req, res) => {
                     });
                 } else {
                     res.status(500).send({
-                        message : err.message || "Some error occurred while retrieving staff."
+                        message: err.message || "Some error occurred while retrieving staff."
                     });
                 }
                 return;
@@ -38,33 +39,37 @@ exports.getById = (req, res) => {
         });
 }
 
-// Retrieve Staff by credentials
-exports.getByUsername = (req, res) => {
-   
+
+exports.updateById = (req, res) => {
+
     if (!req.body) {
-        res.status(401).send({
-            message : "Unauthorized access"
+        res.status(400).send({
+            message: "Content can not be empty!"
         })
     }
 
-    res.send(`your email is ${req.body.email}`);
-   
-    // staffservice.getById(
-    //     req.params.staff_id,
-    //     (err, data) => {
-    //         if (err.flag === 'not_found') {
-    //             res.status(404).send({
-    //                 message: `Not found Staff with id ${req.params.staff_id}.`
-    //             });
-    //         } else {
-    //             res.status(500).send({
-    //                 message : err.message || "Some error occurred while retrieving staff."
-    //             });
-    //         }
+    staffservice.updateById(
+        req.params, // forward parameter
+        req.body, // body parameter from form
+        (err, data) => {
 
-    //         res.send(data);
+            if (err) {
+                if (err.flag === 'not_found') {
+                    res.status(404).send({
+                        message: `Staff not found with id ${req.params.staff_id}.`
+                    });
+                } else {
+                    res.status(500).send({
+                        message: err.message || "Some error occurred while retrieving staff."
+                    });
+                }
+                return;
+            }
 
-    //     });
+            res.send(data);
+
+        }
+    )
 }
 
 module.exports = exports;
