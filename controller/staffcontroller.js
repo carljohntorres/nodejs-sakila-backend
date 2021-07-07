@@ -72,4 +72,57 @@ exports.updateById = (req, res) => {
     )
 }
 
+exports.deleteById = (req, res) => {
+
+    staffservice.deleteById(
+        req.params,
+        (err, data) => {
+
+            if (err) {
+                if (err.flag === 'not_found') {
+                    res.status(404).send({
+                        message: `Staff not found with id ${req.params.staff_id}.`
+                    });
+                } else {
+                    res.status(500).send({
+                        message: err.message || "Some error occurred while retrieving staff."
+                    });
+                }
+                return;
+            }
+
+            res.send(data);
+
+        }
+    )
+
+
+}
+
+exports.deleteById = (req, res) => {
+
+    staffservice.create(
+        req.body,
+        (err, data) => {
+
+            if (err) {
+                if (err.flag === 'not_found') {
+                    res.status(404).send({
+                        message: `Staff not found with id ${req.params.staff_id}.`
+                    });
+                } else {
+                    res.status(500).send({
+                        message: err.message || "Some error occurred while retrieving staff."
+                    });
+                }
+                return;
+            }
+
+            res.send(data);
+        }
+    )
+}
+
+
+
 module.exports = exports;
