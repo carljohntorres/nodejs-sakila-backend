@@ -1,4 +1,5 @@
 const Staff = require('../model/Staff');
+const _Staff = require('../model/reclass/Staff');
 const sql = require('../private/resource/connection')
 
 Staff.getAll = result => {
@@ -52,10 +53,23 @@ Staff.getById = (param, result) => {
 
 Staff.create = (param, result) => {
 
-    const query = 'INSERT INTO staff SET ?';
+    const query = 'INSERT INTO staff ' +
+                  '(first_name, last_name, address_id, email, store_id, active, role_id, username) ' +
+                  'VALUES (?) ';
+
+    const values = [
+        param.first_name,
+        param.last_name,
+        param.address_id,
+        param.email,
+        param.store_id,
+        param.active,
+        param.role_id,
+        param.first_name
+    ];
 
     sql.query(query,
-        param,
+        [values],
         (err, res) => {
 
             if (err) {
@@ -66,7 +80,6 @@ Staff.create = (param, result) => {
 
             result(null, { message: `Account created` });
         });
-
 };
 
 Staff.updateById = (param, body, result) => {
