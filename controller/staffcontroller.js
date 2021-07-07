@@ -9,7 +9,7 @@ exports.getAll = (req, res) => {
                 message: err.message || "Some error occurred while retrieving staff."
             });
         }
-
+        
         res.send(data);
 
     });
@@ -17,7 +17,7 @@ exports.getAll = (req, res) => {
 
 // Retrieve Staff by Id
 exports.getById = (req, res) => {
-
+    
     staffservice.getById(
         req.params,
         (err, data) => {

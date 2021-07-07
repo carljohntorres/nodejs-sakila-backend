@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 
 // Connect first before enable API
 conn.connect( err => {
+    
     if (err) {
         console.log(err);
         return;
