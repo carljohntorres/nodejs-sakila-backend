@@ -3,20 +3,18 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
-const conn = require('./private/connection/connection');
-const { allowedNodeEnvironmentFlags } = require('process');
-const { SUPPORTBIGNUMBERS } = require('./configuration/credentials');
+const conn = require('./private/resource/connection');
 
 const app = express();
 
 // app.use(cors());
 
-app.use(morgan('dev', {
-    skip: (req, res) => {
-        return res.statusCode < 400;
-    }
-}));
-
+// app.use(morgan('dev', {
+//     skip: (req, res) => {
+//         return res.statusCode < 400;
+//     }
+// }));
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
     res.json({ message : 'Service is running' });
@@ -42,13 +40,8 @@ conn.connect( err => {
         app.use('/', require(`./routes/${file}`));
     });
 
-    
-    //app.use(app.router);
-    
-
     app.listen(port, () => console.log(`DEVELOPMENT MODE LISTENING ${port}`));
    
-
 });
 
 
