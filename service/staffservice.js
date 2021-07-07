@@ -1,5 +1,4 @@
 const Staff = require('../model/Staff');
-const _Staff = require('../model/reclass/Staff');
 const sql = require('../private/resource/connection')
 
 Staff.getAll = result => {
@@ -7,7 +6,7 @@ Staff.getAll = result => {
     const query = `SELECT * FROM staff`;
 
     sql.query(query,
-        (err, res) => {
+        (err, res) => { // error, resultset
 
             if (err) {
                 console.log(`Error : ${err}`);
@@ -18,6 +17,7 @@ Staff.getAll = result => {
             var list = [];
 
             Object.keys(res).forEach(key => {
+                console.log(key)
                 list.push(new Staff(res[key]));
             });
 
@@ -106,8 +106,6 @@ Staff.updateById = (param, body, result) => {
         body.role_id,
         param.staff_id
     ];
-
-    console.log(query);
 
     sql.query(query,
         values,

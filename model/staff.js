@@ -11,9 +11,9 @@ class Staff {
       this.username = staff.username;
       //this.password = staff.password;
       this.role_id = staff.role_id;
-      this.login_attempt = staff.login_attempt;
-      this.password_set = staff.password_set;
-      this.last_update = staff.last_update;
+      // this.login_attempt = staff.login_attempt;
+      // this.password_set = staff.password_set;
+      // this.last_update = staff.last_update;
    }
 }
 
