@@ -98,7 +98,7 @@ exports.deleteById = (req, res) => {
 
 }
 
-exports.deleteById = (req, res) => {
+exports.create = (req, res) => {
 
     staffservice.create(
         req.body,
