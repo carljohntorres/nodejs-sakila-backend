@@ -112,7 +112,7 @@ Staff.updateById = (param, body, result) => {
 
 }
 
-Staff.deleteById = (param, result) => {
+Staff.create = (param, result) => {
 
     const query = `DELETE FROM staff WHERE staff_id = ?`;
 

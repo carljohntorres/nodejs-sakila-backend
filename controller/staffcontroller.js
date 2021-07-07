@@ -96,7 +96,6 @@ exports.deleteById = (req, res) => {
         }
     )
 
-
 }
 
 exports.deleteById = (req, res) => {
